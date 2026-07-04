@@ -22,7 +22,7 @@ from agents.state import EmployeeFinancialState
 def _get_llm(temperature: float = 0.3) -> ChatGroq:
     return ChatGroq(
         groq_api_key=os.getenv("GROQ_API_KEY"),
-        model_name="llama3-70b-8192",
+        model_name="llama-3.3-70b-versatile",
         temperature=temperature,
     )
 
