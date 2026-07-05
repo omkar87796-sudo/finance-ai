@@ -393,3 +393,22 @@ def build_company_analysis_graph() -> StateGraph:
 
 # Singleton — compile once at import time
 company_analysis_graph = build_company_analysis_graph()
+
+
+def build_skip_collection_graph():
+    """
+    Graph that skips DataCollector and starts directly from Research.
+    Used when user clicks Skip on the more-data request.
+    """
+    from langgraph.graph import StateGraph, END
+    graph = StateGraph(CompanyAnalysisState)
+    graph.add_node("research",  research_agent)
+    graph.add_node("analyst",   analyst_agent)
+    graph.add_node("decision",  decision_agent)
+    graph.add_node("predictor", predictor_agent)
+    graph.set_entry_point("research")
+    graph.add_edge("research",  "analyst")
+    graph.add_edge("analyst",   "decision")
+    graph.add_edge("decision",  "predictor")
+    graph.add_edge("predictor", END)
+    return graph.compile()
